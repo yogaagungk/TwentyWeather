@@ -2,10 +2,13 @@ package com.resurrect.twentyweather.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.resurrect.twentyweather.R;
+import com.resurrect.twentyweather.adapter.ForecastAdapter;
 import com.resurrect.twentyweather.api.*;
 import com.resurrect.twentyweather.dataCuaca.*;
 
@@ -20,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
     private final static String APPID = "846d1dcd7d69ddc434414a0c56be7588";
     private final static String MODE = "json";
     private final static String UNITS = "metric";
-    private final static int CNT= 1;
+    private final static String CNT="7";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void getForecastData(){
         final TextView cityT = (TextView) findViewById(R.id.cityName);
-        final TextView weatherT = (TextView) findViewById(R.id.weather);
-        final TextView tempT = (TextView) findViewById(R.id.temperature);
-        final TextView descT = (TextView) findViewById(R.id.desc);
+        final RecyclerView recyclerView =  (RecyclerView) findViewById(R.id.recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
 
@@ -45,16 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 String cityName =  city.getName();
 
                 List<Forecast> forecast = response.body().getForecast();
-                int temp = forecast.get(0).getTemp().getAvg();
-
-                List<Weather> weather = forecast.get(0).getWeather();
-                String main = weather.get(0).getMain();
-                String desc = weather.get(0).getDesc();
 
                 cityT.setText(cityName);
-                weatherT.setText(main);
-                tempT.setText(Integer.toString(temp)+" 'C");
-                descT.setText(desc.toUpperCase());
+                recyclerView.setAdapter(new ForecastAdapter(forecast, R.layout.content_main, getApplicationContext()));
             }
 
             @Override

@@ -13,6 +13,6 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @GET("/data/2.5/forecast/daily")
-    Call<CommonInfo> getWeatherNow(@Query("q") String city, @Query("mode") String mode, @Query("units") String units,@Query("cnt") int cnt, @Query("appid") String appId);
+    Call<CommonInfo> getWeatherNow(@Query("q") String city, @Query("mode") String mode, @Query("units") String units, @Query("cnt") String cnt, @Query("appid") String appId);
 
 }

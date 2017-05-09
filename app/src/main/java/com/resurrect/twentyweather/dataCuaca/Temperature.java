@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Temperature {
     @SerializedName("min")
-    private int min;
+    private float min;
     @SerializedName("max")
-    private int max;
+    private float max;
 
-    public int getAvg(){
+    public float getAvg(){
         return (min+max)/2;
     }
 }
